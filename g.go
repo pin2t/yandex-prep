@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"sort"
 )
 
 type state struct{ city, len int }
@@ -29,13 +30,20 @@ func main() {
 	to--
 	seen := map[int]bool{}
 	seen[from] = true
+	closer := make([]int, n)
+	for i := 0; i < n; i++ {
+		closer[i] = i
+	}
+	sort.Slice(closer, func(i, j int) bool {
+		return abs(cities[i].x-cities[to].x)+abs(cities[i].y-cities[to].y) < abs(cities[j].x-cities[to].x)+abs(cities[j].y-cities[to].y)
+	})
 	paths := make([]state, 0, 1000000)
 	paths = append(paths, state{from, 0})
 	for i := 0; i < len(paths); i++ {
 		s := paths[i]
 		seen[s.city] = true
-		for city, coords := range cities {
-			if abs(coords.x-cities[s.city].x)+abs(coords.y-cities[s.city].y) <= k && !seen[city] {
+		for _, city := range closer {
+			if abs(cities[city].x-cities[s.city].x)+abs(cities[city].y-cities[s.city].y) <= k && !seen[city] {
 				if city == to {
 					fmt.Println(s.len + 1)
 					return

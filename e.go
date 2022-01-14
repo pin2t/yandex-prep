@@ -12,7 +12,7 @@ func main() {
 	s1 := scanner.Text()
 	scanner.Scan()
 	s2 := scanner.Text()
-	chars1 := make([]int, 26)
+	var chars1, chars2 [26]int := make([]int, 26)
 	for _, c := range s1 {
 		chars1[c-'a']++
 	}
