@@ -12,16 +12,15 @@ func main() {
 	s1 := scanner.Text()
 	scanner.Scan()
 	s2 := scanner.Text()
-	var chars1, chars2 [26]int := make([]int, 26)
+	var chars1, chars2 [26]int
 	for _, c := range s1 {
-		chars1[c-'a']++
+		chars1[byte(c)-'a']++
 	}
-	chars2 := make([]int, 26)
 	for _, c := range s2 {
-		chars2[c-'a']++
+		chars2[byte(c)-'a']++
 	}
-	for i, c := range chars1 {
-		if c != chars2[i] {
+	for i := 0; i < 26; i++ {
+		if chars1[i] != chars2[i] {
 			fmt.Println("0")
 			return
 		}
