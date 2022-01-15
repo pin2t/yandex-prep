@@ -34,8 +34,9 @@ func main() {
 	for i := 0; i < n; i++ {
 		closer[i] = i
 	}
+	distance := func(i, j int) int { return abs(cities[i].x-cities[j].x) + abs(cities[i].y-cities[j].y) }
 	sort.Slice(closer, func(i, j int) bool {
-		return abs(cities[i].x-cities[to].x)+abs(cities[i].y-cities[to].y) < abs(cities[j].x-cities[to].x)+abs(cities[j].y-cities[to].y)
+		return distance(i, to) < distance(j, to)
 	})
 	paths := make([]state, 0, 1000000)
 	paths = append(paths, state{from, 0})
@@ -43,7 +44,7 @@ func main() {
 		s := paths[i]
 		seen[s.city] = true
 		for _, city := range closer {
-			if abs(cities[city].x-cities[s.city].x)+abs(cities[city].y-cities[s.city].y) <= k && !seen[city] {
+			if distance(city, s.city) <= k && !seen[city] {
 				if city == to {
 					fmt.Println(s.len + 1)
 					return

@@ -21,9 +21,9 @@ func main() {
 	}
 	for i := 0; i < 26; i++ {
 		if chars1[i] != chars2[i] {
-			fmt.Println("0")
+			fmt.Println(0)
 			return
 		}
 	}
-	fmt.Println("1")
+	fmt.Println(1)
 }
