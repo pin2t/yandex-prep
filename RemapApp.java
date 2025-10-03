@@ -8,7 +8,11 @@ public class RemapApp {
             put(1, List.of(1L, 2L, 3L));
             put(2, List.of(11L, 22L));
         }};
-        var remapped = data.entrySet().stream().flatMap(e -> e.getValue().stream().map(ee -> Map.entry(ee, e.getKey())))
+        var remapped = new RemapApp().remap(data);
+    }
+
+    public Map<Long, Integer> remap(Map<Integer, List<Long>> data) {
+        return data.entrySet().stream().flatMap(e -> e.getValue().stream().map(ee -> Map.entry(ee, e.getKey())))
             .collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 }
