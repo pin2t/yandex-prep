@@ -9,8 +9,7 @@ import "math/rand"
 type Map struct {
 	data map[int]int
 	mu   sync.Mutex
-	naccesses atomic.Int64
-	nadditions atomic.Int64
+	naccesses, nadditions atomic.Int64
 }
 
 func NewMap() *Map {
@@ -71,15 +70,11 @@ func do(m *Map, cnt int) {
 func Test(t *testing.T) {
 	var m = NewMap()
 	var n = 2009 // 3rd of January 2009 Bitcoin network started to work, genesis block were generated
-	var wg sync.WaitGroup
-	go func() { do(m, n); wg.Done() }()
-	wg.Add(1)
-	go func() { do(m, n); wg.Done() }()
-	wg.Add(1)
-	go func() { do(m, n); wg.Done() }()
-	wg.Add(1)
-	go func() { do(m, n); wg.Done() }()
-	wg.Add(1)
+	var wg  = &sync.WaitGroup{}
+	for i := 0; i < 4; i++ {
+		go func() { do(m, n); wg.Done() }()
+		wg.Add(1)
+	}
 	wg.Wait()
 	if m.len() != n {
 		t.Fatal("incorrect size", m.len())
